@@ -1,11 +1,11 @@
-modLoader="javafml"
-loaderVersion="[40,)"
+modLoader="neoforge"
+loaderVersion="[1,)"
 license="MIT"
 
 [[mods]]
 modId="terraforged"
 displayName="TerraForged"
-version="0.3.1"
+version="${file.jarVersion}"
 authors="dags,Won-Ton"
 credits="dags,Won-Ton"
 logoFile="terraforged.png"
@@ -13,9 +13,12 @@ displayURL="https://terraforged.com"
 issueTrackerURL="https://github.com/TerraForged/tracker/issues"
 description="A terrain generator!"
 
+[[mixins]]
+config="terraforged.mixins.json"
+
 [[dependencies.terraforged]]
-    modId="forge"
+    modId="neoforge"
     mandatory=true
-    versionRange="[40,)"
+    versionRange="[21.1,)"
     ordering="NONE"
     side="BOTH"

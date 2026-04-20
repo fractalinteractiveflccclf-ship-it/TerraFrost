@@ -31,26 +31,17 @@ import com.terraforged.mod.lifecycle.CommonSetup;
 import com.terraforged.mod.lifecycle.DataGenSetup;
 import com.terraforged.mod.lifecycle.Stage;
 import net.minecraft.core.Registry;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
-import net.minecraftforge.registries.DeferredRegister;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.neoforge.data.event.GatherDataEvent;
 
 public class TFData extends Stage {
     public static final TFData STAGE = new TFData();
 
     @Override
     protected void doInit() {
-        var eventBus = FMLJavaModLoadingContext.get().getModEventBus();
-        eventBus.addListener(this::onGenerateData);
-
-        var register = DeferredRegister.create(Registry.BIOME_REGISTRY, TerraForged.MODID);
-        register.register(eventBus);
-
+        // Data generation is handled differently in NeoForge 1.21.1
         DataGenSetup.STAGE.run();
-
-        for (var entry : CommonAPI.get().getRegistryManager().getRegistry(TerraForged.BIOMES)) {
-            register.register(entry.getKey().location().getPath(), entry::getValue);
-        }
     }
 
     void onGenerateData(GatherDataEvent event) {
