@@ -68,7 +68,7 @@ public class DataGen {
     protected CompletableFuture<?> doExport(Path dir) {
         FileUtil.delete(dir);
 
-        var registries = RegistryAccess.builtinCopy();
+        var registries = RegistryAccess.fromRegistryOfRegistries(net.minecraft.core.registries.Registries.datapack());
         var writeOps = RegistryOps.create(JsonOps.INSTANCE, registries);
 
         TagLoader.bindTags(registries);
@@ -85,7 +85,7 @@ public class DataGen {
     }
 
     private void genPreset(Path dir, RegistryAccess registries, RegistryOps<JsonElement> writeOps) {
-        var normal = registries.ownedRegistryOrThrow(Registry.WORLD_PRESET_REGISTRY)
+        var normal = registries.registryOrThrow(Registry.WORLD_PRESET_REGISTRY)
                 .getOrThrow(WorldPresets.NORMAL);
 
         var json = Codecs.encode(normal, WorldPreset.DIRECT_CODEC, writeOps).getAsJsonObject();
@@ -99,7 +99,7 @@ public class DataGen {
     }
 
     private void genDimensionType(Path dir, RegistryAccess registries, RegistryOps<JsonElement> writeOps) {
-        var registry = registries.ownedRegistryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
+        var registry = registries.registryOrThrow(Registry.DIMENSION_TYPE_REGISTRY);
         var overworld = registry.getOrThrow(BuiltinDimensionTypes.OVERWORLD);
 
         var json = Codecs.encode(overworld, DimensionType.DIRECT_CODEC, writeOps).getAsJsonObject();
@@ -121,7 +121,7 @@ public class DataGen {
     }
 
     private <T> void export(Path dir, DataRegistry<T> builtin, RegistryAccess access, DynamicOps<JsonElement> ops) {
-        var registry = access.ownedRegistryOrThrow(builtin.key().get());
+        var registry = access.registryOrThrow(builtin.key().get());
 
         TerraForged.LOG.info("Exporting registry: {}", registry.key());
         for (var entry : builtin) {

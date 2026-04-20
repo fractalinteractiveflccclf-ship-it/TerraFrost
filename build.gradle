@@ -1,18 +1,8 @@
-buildscript {
-    repositories {
-        maven { url "https://repo.spongepowered.org/maven" }
-        maven { url = "https://maven.minecraftforge.net" }
-        mavenCentral()
-    }
-    dependencies {
-        classpath group: "org.spongepowered", name: "mixingradle", version: "0.7.32", changing: true
-        classpath group: "net.minecraftforge.gradle", name: "ForgeGradle", version: "5.1.+", changing: true // 5.1.33
-    }
+plugins {
+    id 'net.neoforged.gradle.userdev' version '7.0.165'
+    id 'org.spongepowered.mixin' version '0.7.32'
+    id 'java'
 }
-
-apply plugin: "net.minecraftforge.gradle"
-apply plugin: "org.spongepowered.mixin"
-apply plugin: "java"
 
 apply from: file("common.gradle")
 
@@ -29,11 +19,10 @@ repositories {
 
 dependencies {
     annotationProcessor "org.spongepowered:mixin:0.8.5:processor"
-    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+    implementation "net.neoforged:neoforge:${neoforge_version}"
 }
 
 jar {
-    finalizedBy("reobfJar")
     manifest { attributes(["MixinConfigs": "terraforged.mixins.json"]) }
 }
 
@@ -46,8 +35,8 @@ minecraft {
     runs {
         client {
             workingDirectory project.file("run")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
+            property "neoforge.logging.markers", "REGISTRIES"
+            property "neoforge.logging.console.level", "debug"
             arg "-mixin.config=terraforged.mixins.json"
             jvmArgs "-Ddev"
             mods {
@@ -59,8 +48,8 @@ minecraft {
 
         server {
             workingDirectory project.file("run")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
+            property "neoforge.logging.markers", "REGISTRIES"
+            property "neoforge.logging.console.level", "debug"
             arg "-mixin.config=terraforged.mixins.json"
             jvmArgs "-Ddev"
             mods {
@@ -72,8 +61,8 @@ minecraft {
 
         data {
             workingDirectory project.file("run")
-            property "forge.logging.markers", "REGISTRIES"
-            property "forge.logging.console.level", "debug"
+            property "neoforge.logging.markers", "REGISTRIES"
+            property "neoforge.logging.console.level", "debug"
             args "--mod", "terraforged", "--server", "--output", file("generated")
             arg "-mixin.config=terraforged.mixins.json"
             jvmArgs "-Ddatagen"

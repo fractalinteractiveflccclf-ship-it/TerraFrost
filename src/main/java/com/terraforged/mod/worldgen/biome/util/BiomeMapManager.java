@@ -52,8 +52,8 @@ public class BiomeMapManager {
     private final Map<BiomeType, WeightMap<Holder<Biome>>> biomeMap;
 
     public BiomeMapManager(RegistryAccess access) {
-        biomes = access.ownedRegistryOrThrow(Registry.BIOME_REGISTRY);
-        climateTypes = access.ownedRegistryOrThrow(TerraForged.CLIMATES.get());
+        biomes = access.registryOrThrow(Registry.BIOME_REGISTRY);
+        climateTypes = access.registryOrThrow(TerraForged.CLIMATES.get());
         overworldBiomes = getOverworldBiomes(biomes, climateTypes);
         biomeMap = buildBiomeMap();
     }

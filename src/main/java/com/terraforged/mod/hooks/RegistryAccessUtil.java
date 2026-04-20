@@ -73,7 +73,7 @@ public class RegistryAccessUtil {
     }
 
     public static <T> void copy(Registry<T> registry, RegistryAccess.Writable holder) {
-        var dest = (WritableRegistry<T>) holder.ownedRegistryOrThrow(registry.key());
+        var dest = (WritableRegistry<T>) holder.registryOrThrow(registry.key());
         for (var entry : registry.entrySet()) {
             dest.register(entry.getKey(), entry.getValue(), registry.lifecycle(entry.getValue()));
         }
